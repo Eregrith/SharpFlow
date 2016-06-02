@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "GitFlow Chart";
+}
+
+<div id="drawhere"></div>
+
+<script>
+    $(function () {
+        var element = document.getElementById('drawhere');
+
+        $.ajax({
+            url: "/Flow/GetBranches",
+            method: "get",
+            dataType: "json",
+            success: function (json) {
+                var options = {
+                    developRef: "refs/heads/dev",
+                    featurePrefix: "refs/heads/evol-",
+                    releasePrefix: "refs/heads/release-",
+                    hotfixPrefix: "refs/heads/hotfix-",
+                    dataCallback: function (done) {
+                        window.setTimeout(function () {
+                            done(json);
+                        },
+                        100);
+                    }
+                };
+                GitFlowVisualize.draw(element, options);
+            }
+        });
+
+    });
+</script>

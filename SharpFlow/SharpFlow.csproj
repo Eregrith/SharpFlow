@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\LibGit2Sharp.NativeBinaries.1.0.129\build\LibGit2Sharp.NativeBinaries.props" Condition="Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.129\build\LibGit2Sharp.NativeBinaries.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -44,6 +45,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LibGit2Sharp, Version=0.22.0.0, Culture=neutral, PublicKeyToken=7cbde695407f0333, processorArchitecture=MSIL">
+      <HintPath>..\packages\LibGit2Sharp.0.22.0\lib\net40\LibGit2Sharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -120,13 +125,156 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\FlowController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\JsonAuthor.cs" />
+    <Compile Include="Models\JsonBranchCollection.cs" />
+    <Compile Include="Models\JsonCommit.cs" />
+    <Compile Include="Models\JsonCommitsCollection.cs" />
+    <Compile Include="Models\JsonReference.cs" />
+    <Compile Include="Models\JsonTagsCollection.cs" />
+    <Compile Include="Models\LightweightRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\aui\css\arrow.png" />
+    <Content Include="Content\aui\css\atlassian-logo-grey.min.svg" />
+    <Content Include="Content\aui\css\atlassian-logo-grey.svg" />
+    <Content Include="Content\aui\css\atlassian-logo.min.svg" />
+    <Content Include="Content\aui\css\atlassian-logo.svg" />
+    <Content Include="Content\aui\css\aui-experimental.css" />
+    <Content Include="Content\aui\css\aui-experimental.min.css" />
+    <Content Include="Content\aui\css\aui-iconfonts.css" />
+    <Content Include="Content\aui\css\aui-iconfonts.min.css" />
+    <Content Include="Content\aui\css\aui.css" />
+    <Content Include="Content\aui\css\aui.min.css" />
+    <Content Include="Content\aui\css\bg-grippy.png" />
+    <Content Include="Content\aui\css\fav_off_16.png" />
+    <Content Include="Content\aui\css\fav_on_16.png" />
+    <Content Include="Content\aui\css\fonts\atlassian-icons.svg" />
+    <Content Include="Content\aui\css\forms\icons_form.gif" />
+    <Content Include="Content\aui\css\icons\aui-icon-close.png" />
+    <Content Include="Content\aui\css\icons\aui-icon-tools.gif" />
+    <Content Include="Content\aui\css\icons\aui-message-icon-sprite.png" />
+    <Content Include="Content\aui\css\icons\core\icon-dropdown-active-d.png" />
+    <Content Include="Content\aui\css\icons\core\icon-dropdown-active.png" />
+    <Content Include="Content\aui\css\icons\core\icon-dropdown-d.png" />
+    <Content Include="Content\aui\css\icons\core\icon-dropdown.png" />
+    <Content Include="Content\aui\css\icons\core\icon-maximize-d.png" />
+    <Content Include="Content\aui\css\icons\core\icon-maximize.png" />
+    <Content Include="Content\aui\css\icons\core\icon-minimize-d.png" />
+    <Content Include="Content\aui\css\icons\core\icon-minimize.png" />
+    <Content Include="Content\aui\css\icons\core\icon-move-d.png" />
+    <Content Include="Content\aui\css\icons\core\icon-move.png" />
+    <Content Include="Content\aui\css\icons\core\icon-search.png" />
+    <Content Include="Content\aui\css\icons\forms\icon-date.png" />
+    <Content Include="Content\aui\css\icons\forms\icon-help.png" />
+    <Content Include="Content\aui\css\icons\forms\icon-range.png" />
+    <Content Include="Content\aui\css\icons\forms\icon-required.png" />
+    <Content Include="Content\aui\css\icons\forms\icon-users.png" />
+    <Content Include="Content\aui\css\icons\messages\icon-close-inverted.png" />
+    <Content Include="Content\aui\css\icons\messages\icon-close.png" />
+    <Content Include="Content\aui\css\icons\messages\icon-error-white.png" />
+    <Content Include="Content\aui\css\icons\messages\icon-error.png" />
+    <Content Include="Content\aui\css\icons\messages\icon-generic.png" />
+    <Content Include="Content\aui\css\icons\messages\icon-hint.png" />
+    <Content Include="Content\aui\css\icons\messages\icon-info.png" />
+    <Content Include="Content\aui\css\icons\messages\icon-success.png" />
+    <Content Include="Content\aui\css\icons\messages\icon-warning.png" />
+    <Content Include="Content\aui\css\icons\sidebar\icon-group-actions.svg" />
+    <Content Include="Content\aui\css\icons\sidebar\icon-group.png" />
+    <Content Include="Content\aui\css\icons\sidebar\icon-handle.png" />
+    <Content Include="Content\aui\css\icons\sidebar\icon-toggle.svg" />
+    <Content Include="Content\aui\css\images\arrow.png" />
+    <Content Include="Content\aui\css\images\atlassian-logo-grey.min.svg" />
+    <Content Include="Content\aui\css\images\atlassian-logo-grey.svg" />
+    <Content Include="Content\aui\css\images\atlassian-logo.min.svg" />
+    <Content Include="Content\aui\css\images\atlassian-logo.svg" />
+    <Content Include="Content\aui\css\images\bg-grippy.png" />
+    <Content Include="Content\aui\css\images\fav_off_16.png" />
+    <Content Include="Content\aui\css\images\fav_on_16.png" />
+    <Content Include="Content\aui\css\images\forms\icons_form.gif" />
+    <Content Include="Content\aui\css\images\icons\aui-icon-close.png" />
+    <Content Include="Content\aui\css\images\icons\aui-icon-tools.gif" />
+    <Content Include="Content\aui\css\images\icons\aui-message-icon-sprite.png" />
+    <Content Include="Content\aui\css\images\icons\core\icon-dropdown-active-d.png" />
+    <Content Include="Content\aui\css\images\icons\core\icon-dropdown-active.png" />
+    <Content Include="Content\aui\css\images\icons\core\icon-dropdown-d.png" />
+    <Content Include="Content\aui\css\images\icons\core\icon-dropdown.png" />
+    <Content Include="Content\aui\css\images\icons\core\icon-maximize-d.png" />
+    <Content Include="Content\aui\css\images\icons\core\icon-maximize.png" />
+    <Content Include="Content\aui\css\images\icons\core\icon-minimize-d.png" />
+    <Content Include="Content\aui\css\images\icons\core\icon-minimize.png" />
+    <Content Include="Content\aui\css\images\icons\core\icon-move-d.png" />
+    <Content Include="Content\aui\css\images\icons\core\icon-move.png" />
+    <Content Include="Content\aui\css\images\icons\core\icon-search.png" />
+    <Content Include="Content\aui\css\images\icons\forms\icon-date.png" />
+    <Content Include="Content\aui\css\images\icons\forms\icon-help.png" />
+    <Content Include="Content\aui\css\images\icons\forms\icon-range.png" />
+    <Content Include="Content\aui\css\images\icons\forms\icon-required.png" />
+    <Content Include="Content\aui\css\images\icons\forms\icon-users.png" />
+    <Content Include="Content\aui\css\images\icons\messages\icon-close-inverted.png" />
+    <Content Include="Content\aui\css\images\icons\messages\icon-close.png" />
+    <Content Include="Content\aui\css\images\icons\messages\icon-error-white.png" />
+    <Content Include="Content\aui\css\images\icons\messages\icon-error.png" />
+    <Content Include="Content\aui\css\images\icons\messages\icon-generic.png" />
+    <Content Include="Content\aui\css\images\icons\messages\icon-hint.png" />
+    <Content Include="Content\aui\css\images\icons\messages\icon-info.png" />
+    <Content Include="Content\aui\css\images\icons\messages\icon-success.png" />
+    <Content Include="Content\aui\css\images\icons\messages\icon-warning.png" />
+    <Content Include="Content\aui\css\images\icons\sidebar\icon-group-actions.svg" />
+    <Content Include="Content\aui\css\images\icons\sidebar\icon-group.png" />
+    <Content Include="Content\aui\css\images\icons\sidebar\icon-handle.png" />
+    <Content Include="Content\aui\css\images\icons\sidebar\icon-toggle.svg" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-answers.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-atlassian.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-aui.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-bamboo.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-bitbucket.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-cloud.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-clover.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-confluence.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-crowd.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-crucible.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-developers.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-experts.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-fecru.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-fisheye.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-hipchat.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-jira.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-marketplace.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-stash.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-support.png" />
+    <Content Include="Content\aui\css\images\logos\aui-header-logo-university.png" />
+    <Content Include="Content\aui\css\images\toolbar\aui-toolbar-24px.png" />
+    <Content Include="Content\aui\css\images\wait.gif" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-answers.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-atlassian.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-aui.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-bamboo.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-bitbucket.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-cloud.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-clover.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-confluence.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-crowd.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-crucible.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-developers.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-experts.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-fecru.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-fisheye.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-hipchat.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-jira.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-marketplace.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-stash.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-support.png" />
+    <Content Include="Content\aui\css\logos\aui-header-logo-university.png" />
+    <Content Include="Content\aui\css\select2-spinner.gif" />
+    <Content Include="Content\aui\css\select2.png" />
+    <Content Include="Content\aui\css\select2x2.png" />
+    <Content Include="Content\aui\css\toolbar\aui-toolbar-24px.png" />
+    <Content Include="Content\aui\css\wait.gif" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -135,7 +283,11 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\aui\css\fonts\atlassian-icons.eot" />
+    <Content Include="Content\aui\css\fonts\atlassian-icons.ttf" />
+    <Content Include="Content\aui\css\fonts\atlassian-icons.woff" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\gitflow-visualize.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -158,13 +310,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Flow\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -208,6 +357,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.129\build\LibGit2Sharp.NativeBinaries.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.NativeBinaries.1.0.129\build\LibGit2Sharp.NativeBinaries.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
